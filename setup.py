@@ -12,7 +12,7 @@ setup(
     author_email="ahearin@anl.gov",
     description="Differentiable model of halo spin",
     long_description="Differentiable model of halo spin",
-    install_requires=["numpy", "jax"],
+    install_requires=["numpy", "scipy", "jax"],
     packages=find_packages(),
     url="https://github.com/aphearin/diffspin",
 )
