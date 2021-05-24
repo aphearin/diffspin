@@ -47,6 +47,12 @@ def test_lgspin_properly_bounded():
 
 
 def test_agreement_with_hard_coded_data():
+    """The two ASCII data files testing_data/tarr.txt
+    and testing_data/lgspin_at_tarr.txt contain tabulations of the correct values of
+    the lgspin_vs_t function for the parameter values stored in the header of
+    testing_data/lgspin_at_tarr.txt. This unit test enforces agreement between the
+    diffspin source code and that tabulation.
+    """
     tarr = np.loadtxt(os.path.join(DDRN, "tarr.txt"))
     lgspin_correct = np.loadtxt(os.path.join(DDRN, "lgspin_at_tarr.txt"))
 
