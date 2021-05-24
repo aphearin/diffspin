@@ -1,9 +1,13 @@
 """
 """
+import os
 import numpy as np
 from ..spin_evolution import _get_norm, _get_u_norm, lgspin_vs_t
 from ..spin_evolution import SPIN_PARAM_BOUNDS, DEFAULT_SPIN_PARAMS
 from ..spin_evolution import get_bounded_params, get_unbounded_params
+
+_THIS_DRNAME = os.path.dirname(os.path.abspath(__file__))
+DDRN = os.path.join(_THIS_DRNAME, "testing_data")
 
 
 def test_bounded_norm():
@@ -40,3 +44,21 @@ def test_lgspin_properly_bounded():
         p = get_bounded_params(up)
         lgspin = lgspin_vs_t(tarr, *p)
         assert np.all(lgspin >= SPIN_PARAM_BOUNDS["spin_norm"][0])
+
+
+def test_agreement_with_hard_coded_data():
+    """The two ASCII data files testing_data/tarr.txt
+    and testing_data/lgspin_at_tarr.txt contain tabulations of the correct values of
+    the lgspin_vs_t function for the parameter values stored in the header of
+    testing_data/lgspin_at_tarr.txt. This unit test enforces agreement between the
+    diffspin source code and that tabulation.
+    """
+    tarr = np.loadtxt(os.path.join(DDRN, "tarr.txt"))
+    lgspin_correct = np.loadtxt(os.path.join(DDRN, "lgspin_at_tarr.txt"))
+
+    with open(os.path.join(DDRN, "lgspin_at_tarr.txt"), "r") as f:
+        next(f)
+        param_string = next(f)
+    params = [float(x) for x in param_string.strip().split()[1:]]
+    lgspin = lgspin_vs_t(tarr, *params)
+    assert np.allclose(lgspin, lgspin_correct, atol=0.01)

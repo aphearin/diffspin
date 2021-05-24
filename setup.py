@@ -15,4 +15,5 @@ setup(
     install_requires=["numpy", "scipy", "jax"],
     packages=find_packages(),
     url="https://github.com/aphearin/diffspin",
+    package_data={"diffspin": ("tests/testing_data/*.dat",)},
 )
